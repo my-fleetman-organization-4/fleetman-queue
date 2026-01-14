@@ -14,7 +14,9 @@ spec:
   - name: maven
     image:  israel452/maven-docker:2.0
     command:
-    - cat
+    - sleep
+    args:
+    - infinity
     volumeMounts:
     - name: docker-sock
       mountPath: /var/run/docker.sock
@@ -74,5 +76,6 @@ spec:
       }
    }
 }
+
 
 
