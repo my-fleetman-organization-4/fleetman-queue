@@ -15,7 +15,6 @@ spec:
     image:  israel452/maven-docker:2.0
     command:
     - cat
-    tty: true
     volumeMounts:
     - name: docker-sock
       mountPath: /var/run/docker.sock
@@ -75,4 +74,5 @@ spec:
       }
    }
 }
+
 
