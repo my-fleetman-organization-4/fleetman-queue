@@ -51,21 +51,25 @@ spec:
          }
       }
 
-      stage('Build and Push Image') {
-         steps {
-          
-
-            container('maven') {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                  sh '''
-                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    docker image build -t ${REPOSITORY_TAG} .
-                    docker push ${REPOSITORY_TAG}
-                  '''
+    stage('Build and Push Image') {
+            steps {
+                container('maven') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'dockerhub',
+                            usernameVariable: 'DOCKER_USER',
+                            passwordVariable: 'DOCKER_PASS'
+                        )
+                    ]) {
+                        sh '''
+                            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+                            docker build -t ${REPOSITORY_TAG} .
+                            docker push ${REPOSITORY_TAG}
+                        '''
+                    }
                 }
             }
-         }
-      }
+        }
 
       stage('Deploy to Cluster') {
           steps {
@@ -76,6 +80,7 @@ spec:
       }
    }
 }
+
 
 
 
